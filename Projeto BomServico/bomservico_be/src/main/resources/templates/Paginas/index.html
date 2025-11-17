@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Bom Serviço — Classificados de Serviços</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons + Font Awesome (opcional) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+    <link rel="icon" type="image/png" href="/favicon.png"/>
+
+    <style>
+        :root{
+            --bsrv-primary:#0ea5e9;
+            --bsrv-primary-600:#0284c7;
+            --bsrv-bg-hero: radial-gradient(1200px 600px at 20% -10%, #e0f2fe 0%, transparent 60%),
+            radial-gradient(1000px 600px at 120% 10%, #e0f2fe 0%, transparent 60%),
+            linear-gradient(180deg, #ffffff, #f8fafc);
+        }
+        .navbar { --bs-navbar-nav-link-padding-x: .9rem; }
+        .bsrv-hero{ background:var(--bsrv-bg-hero); position:relative; overflow:hidden; }
+        .bsrv-hero .badge{ letter-spacing:.04em; }
+        .bsrv-search{ box-shadow:0 10px 30px rgba(2,132,199,.12); border:1px solid #e2e8f0; }
+        .bsrv-card{ height:100%; transition:transform .15s ease, box-shadow .15s ease; }
+        .bsrv-card:hover{ transform:translateY(-4px); box-shadow:0 12px 32px rgba(2,132,199,.18); }
+        .bsrv-card .card-img-top{ height:180px; object-fit:cover; }
+        .bsrv-cta{ background:linear-gradient(135deg,#e0f2fe,#f0f9ff 45%,#ffffff); border:1px solid #e2e8f0; }
+        .bsrv-footer a{ text-decoration:none; }
+        .bsrv-scrolltop{ position:fixed; right:16px; bottom:16px; display:none; z-index:1080; }
+
+        /* Mostrar SOMENTE 3 anúncios na Home */
+        #grid-anuncios > [class*="col-"]:nth-child(n+4){ display:none !important; }
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="/">
+            <i class="bi bi-tools text-primary"></i> <span>Bom Serviço</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNav" aria-controls="topNav" aria-expanded="false" aria-label="Alternar navegação">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div id="topNav" class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                <li class="nav-item"><a class="nav-link" href="#como-funciona" data-scroll>Como funciona</a></li>
+
+                <!-- Categorias: dropdown; "Ver categorias" rola até #categorias -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="menuCategorias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Categorias
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="menuCategorias">
+                        <li><a class="dropdown-item" href="#categorias" data-scroll><i class="bi bi-grid me-2"></i>Ver categorias</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li class="dropdown-header small text-muted">Administrativo</li>
+                        <li><a class="dropdown-item" href="/admin/categorias/novo"><i class="bi bi-plus-circle me-2"></i>Cadastrar categoria</a></li>
+                        <li><a class="dropdown-item" href="/admin/categorias"><i class="bi bi-pencil-square me-2"></i>Listar / editar</a></li>
+                        <li><a class="dropdown-item" href="/admin/categorias?mode=delete"><i class="bi bi-trash3 me-2"></i>Excluir</a></li>
+                    </ul>
+                </li>
+
+                <!-- Anúncios: ver e cadastrar -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="menuAnuncios" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Anúncios
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="menuAnuncios">
+                        <li><a class="dropdown-item" href="/anuncios"><i class="bi bi-card-text me-2"></i>Ver anúncios</a></li>
+                        <li><a class="dropdown-item" href="/prestador/anuncios/novo"><i class="bi bi-megaphone me-2"></i>Cadastrar anúncio</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item"><a class="nav-link" href="#destaques" data-scroll>Destaques</a></li>
+
+                <li class="nav-item ms-lg-2">
+                    <a class="btn btn-outline-primary" href="login.html">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Entrar
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary" href="/cadastro">
+                        <i class="bi bi-person-plus-fill me-1"></i> Seja um prestador
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<header class="bsrv-hero py-5 py-lg-6">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+        <span class="badge text-bg-light border rounded-pill px-3 py-2 mb-3">
+          Encontre prestadores confiáveis na sua cidade
+        </span>
+                <h1 class="display-5 fw-bold lh-tight">
+                    Classificados de <span class="text-primary">serviços</span> feitos para você
+                </h1>
+                <p class="lead text-secondary mb-4">
+                    Pesquise por reparos, transporte, culinária, limpeza e muito mais. Fale direto com o prestador.
+                </p>
+
+                <!-- Busca -->
+                <form id="form-busca" class="input-group input-group-lg bsrv-search rounded-3 overflow-hidden bg-white">
+                    <span class="input-group-text bg-white border-0"><i class="bi bi-search"></i></span>
+                    <input id="campo-busca" class="form-control border-0" type="search" placeholder="Ex.: elétrica residencial, frete, confeitaria…" aria-label="Buscar anúncios" />
+                    <button class="btn btn-primary px-4" type="submit">Buscar</button>
+                </form>
+
+                <!-- Sugestões -->
+                <div class="mt-3 d-flex gap-2 flex-wrap">
+                    <button class="btn btn-sm btn-light border" data-bsrv-sugestao="Reparos elétricos">Reparos elétricos</button>
+                    <button class="btn btn-sm btn-light border" data-bsrv-sugestao="Diarista">Diarista</button>
+                    <button class="btn btn-sm btn-light border" data-bsrv-sugestao="Frete/Carreto">Frete/Carreto</button>
+                    <button class="btn btn-sm btn-light border" data-bsrv-sugestao="Bolos e Doces">Bolos e Doces</button>
+                </div>
+
+                <div class="mt-4 small text-secondary">
+                    <i class="bi bi-shield-check me-1 text-success"></i>
+                    Denúncias de anúncios indevidos? Admin pode removê-los rapidamente.
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card shadow-sm rounded-4">
+                    <div class="card-body p-4">
+                        <h5 class="fw-semibold mb-3"><i class="bi bi-stars me-2 text-primary"></i>Publique seu anúncio</h5>
+                        <p class="text-secondary mb-4">
+                            É prestador? Cadastre-se e crie seus anúncios com até 3 fotos, horários de atendimento e contato.
+                        </p>
+                        <div class="d-grid gap-2">
+                            <a class="btn btn-primary btn-lg" href="/cadastro">
+                                <i class="bi bi-rocket-takeoff me-2"></i>Começar agora
+                            </a>
+                            <a class="btn btn-outline-primary" href="login.html">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Já tenho conta
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-3 small text-muted">
+                    Acesso do administrador pelo mesmo botão <a href="login.html" class="link-primary fw-semibold">Entrar</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Como funciona -->
+<section id="como-funciona" class="py-5">
+    <div class="container">
+        <h2 class="h3 fw-bold mb-4">Como funciona</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm rounded-4">
+                    <div class="card-body">
+                        <div class="d-inline-flex justify-content-center align-items-center rounded-circle bg-primary-subtle text-primary mb-3" style="width:48px;height:48px;">
+                            <i class="bi bi-search fs-5"></i>
+                        </div>
+                        <h5 class="fw-semibold">1) Busque e filtre</h5>
+                        <p class="text-secondary">Encontre serviços por palavra-chave e categoria. A visualização é aberta, sem login.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm rounded-4">
+                    <div class="card-body">
+                        <div class="d-inline-flex justify-content-center align-items-center rounded-circle bg-primary-subtle text-primary mb-3" style="width:48px;height:48px;">
+                            <i class="bi bi-chat-dots fs-5"></i>
+                        </div>
+                        <h5 class="fw-semibold">2) Fale com o prestador</h5>
+                        <p class="text-secondary">Preencha o formulário de interesse (nome, telefone, e-mail e mensagem) e aguarde o retorno.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm rounded-4">
+                    <div class="card-body">
+                        <div class="d-inline-flex justify-content-center align-items-center rounded-circle bg-primary-subtle text-primary mb-3" style="width:48px;height:48px;">
+                            <i class="bi bi-person-gear fs-5"></i>
+                        </div>
+                        <h5 class="fw-semibold">3) Anuncie seus serviços</h5>
+                        <p class="text-secondary">Crie anúncios e gerencie suas mensagens no painel do prestador (login necessário).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categorias -->
+<section id="categorias" class="py-5 bg-light border-top">
+    <div class="container">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+            <h2 class="h4 fw-bold mb-0">Categorias populares</h2>
+            <div class="d-flex gap-2">
+                <a class="btn btn-sm btn-outline-secondary" href="/anuncios">
+                    <i class="bi bi-grid me-1"></i>Ver tudo
+                </a>
+            </div>
+        </div>
+        <div id="lista-categorias" class="d-flex flex-wrap gap-2">
+            <!-- Renderizado por JS -->
+        </div>
+    </div>
+</section>
+
+<!-- Destaques -->
+<section id="destaques" class="py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="h4 fw-bold mb-0">Anúncios em destaque</h2>
+            <a class="btn btn-sm btn-outline-secondary" href="/anuncios"><i class="bi bi-card-text me-1"></i>Explorar anúncios</a>
+        </div>
+        <div id="grid-anuncios" class="row row-cols-1 row-cols-md-3 g-4">
+            <!-- Renderizado por JS -->
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-5">
+    <div class="container">
+        <div class="bsrv-cta rounded-4 p-4 p-lg-5 text-center">
+            <h3 class="fw-bold mb-2">É prestador de serviços?</h3>
+            <p class="text-secondary mb-4">
+                Cadastre-se gratuitamente, publique seus anúncios com até 3 fotos e comece a receber contatos hoje mesmo.
+            </p>
+            <a class="btn btn-primary btn-lg" href="/cadastro"><i class="bi bi-person-plus me-2"></i>Seja um prestador</a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bsrv-footer border-top py-4">
+    <div class="container d-flex flex-column flex-lg-row justify-content-between align-items-center gap-3">
+        <div class="text-muted small">&copy; <span id="ano-atual"></span> Bom Serviço — Todos os direitos reservados.</div>
+        <div class="d-flex gap-3 small">
+            <a href="/sobre">Sobre</a>
+            <a href="/contato">Contato</a>
+            <a href="/termos">Termos</a>
+            <a href="/privacidade">Privacidade</a>
+        </div>
+    </div>
+</footer>
+
+<button id="scrolltop" class="btn btn-primary bsrv-scrolltop rounded-circle" aria-label="Voltar ao topo">
+    <i class="bi bi-arrow-up"></i>
+</button>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Scroll suave para âncoras (#categorias, #destaques, etc.) e fechar menus -->
+<script>
+    document.querySelectorAll('a[data-scroll][href^="#"]').forEach(function(a){
+        a.addEventListener('click', function(e){
+            const sel = this.getAttribute('href');
+            const tgt = document.querySelector(sel);
+            if (!tgt) return;
+            e.preventDefault();
+            const offset = 80; // altura aproximada da navbar
+            const top = tgt.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({top, behavior: 'smooth'});
+
+            // fecha dropdown se aberto
+            const dd = this.closest('.dropdown');
+            if (dd) {
+                const toggle = dd.querySelector('[data-bs-toggle="dropdown"]');
+                const inst = bootstrap.Dropdown.getInstance(toggle);
+                if (inst) inst.hide();
+            }
+            // fecha menu mobile
+            const nav = document.getElementById('topNav');
+            if (nav && nav.classList.contains('show')) new bootstrap.Collapse(nav).hide();
+        });
+    });
+</script>
+
+<!-- JS da Home -->
+<script src="../Js/home.js"></script>
+</body>
+</html>
