@@ -14,6 +14,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
 
     Optional<Usuario> findByLogin(String login);
 
-    @Query(value="SELECT * FROM users WHERE us_name LIKE %:keyword%",nativeQuery=true)
+    @Query(value="SELECT * FROM users WHERE us_name LIKE %:keyword%", nativeQuery = true)
     List<Usuario> findAllByKeyword(String keyword);
 }

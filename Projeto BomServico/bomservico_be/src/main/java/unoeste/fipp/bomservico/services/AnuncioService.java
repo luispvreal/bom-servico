@@ -5,12 +5,22 @@ import org.springframework.stereotype.Service;
 import unoeste.fipp.bomservico.entities.Anuncio;
 import unoeste.fipp.bomservico.repositories.AnuncioRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class AnuncioService {
     @Autowired
     private AnuncioRepository anuncioRepository;
+
     public Anuncio getAnuncioByID(Long id){
         Anuncio anuncio=anuncioRepository.findById(id).orElse(null);
         return anuncio;
+    }
+
+    public List<Anuncio> getAnuncioByNome(String nome){
+        List<Anuncio> listaAnuncio = new ArrayList<Anuncio>();
+        listaAnuncio = anuncioRepository.buscarPorTitulo(nome);
+        return listaAnuncio;
     }
 }
